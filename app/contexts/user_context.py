@@ -21,19 +21,19 @@ class UserContext:
         """
         context method to register new user account
         """
-        admin_repository = DBRepository(self.db)
-        admin_repository_transaction = await admin_repository.transaction()
+        db_repository = DBRepository(self.db)
+        admin_repository_transaction = await db_repository.transaction()
         try:
 
-            if (await admin_repository.check_account_existance(user.email)):
+            if (await db_repository.check_account_existance(user.email)):
                 raise CustomHTTPException(
                     detail=f"[check_account_existance] user with email '{user.email}' already registred",
                     status_code=409
                 )
 
             user_code = generate_4_digit_code()
-            token_id = await admin_repository.insert_token(user_code)
-            user_id = await admin_repository.insert_user(
+            token_id = await db_repository.insert_token(user_code)
+            user_id = await db_repository.insert_user(
                 account={
                     **user.dict(),
                     'token_id': token_id
@@ -59,12 +59,12 @@ class UserContext:
         """
         context method to refresh token
         """
-        admin_repository = DBRepository(self.db)
-        admin_repository_transaction = await admin_repository.transaction()
+        db_repository = DBRepository(self.db)
+        admin_repository_transaction = await db_repository.transaction()
         try:
-            account_id = await admin_repository.account_authenticate(user.email, user.password)
+            account_id = await db_repository.account_authenticate(user.email, user.password)
             new_user_code = generate_4_digit_code()
-            await admin_repository.refresh_token(account_id, new_user_code)
+            await db_repository.refresh_token(account_id, new_user_code)
             send_mail(
                 user.email,
                 MailTemplates['account_refresh_token'].value(new_activation_code=new_user_code),
@@ -82,12 +82,12 @@ class UserContext:
         """
         context method to activate a user account using activation token
         """
-        admin_repository = DBRepository(self.db)
-        admin_repository_transaction = await admin_repository.transaction()
+        db_repository = DBRepository(self.db)
+        admin_repository_transaction = await db_repository.transaction()
         try:
-            account_id = await admin_repository.account_authenticate(user.email, user.password)
-            await admin_repository.validate_account_token(account_id, user.token)
-            await admin_repository.activate_user_account(account_id)
+            account_id = await db_repository.account_authenticate(user.email, user.password)
+            await db_repository.validate_account_token(account_id, user.token)
+            await db_repository.activate_user_account(account_id)
             send_mail(
                 user.email,
                 MailTemplates['account_activated_mail'].value,
