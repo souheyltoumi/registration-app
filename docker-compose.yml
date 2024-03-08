@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  # Database container
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: register_user
+      POSTGRES_PASSWORD: register_user
+      POSTGRES_DB: register_db
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Mount the SQL script
+
+  # FastAPI container
+  fastapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "6009:6009"
+    depends_on:
+      - db
+      - mailhog
+    environment:
+      DATABASE_URL: postgresql://register_user:register_user@db:5432/register_db
+
+  # SMTP Server container (using Mailhog as an example)
+  mailhog:
+    image: mailhog/mailhog:latest
+    restart: always
+    ports:
+      - "1025:1025"  # SMTP port
+      - "8025:8025"  # Web UI port
+
+volumes:
+  db_data:
