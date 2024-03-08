@@ -8,7 +8,7 @@ from strategies import (
     UserAccountRefreshResponse
 )
 
-from repositories.admin_db_repository import AdminDBRepository
+from repositories.db_repository import DBRepository
 from utils.common import generate_4_digit_code, AppLogger, CustomHTTPException
 from utils.mailer import send_mail, MailTemplates
 
@@ -21,7 +21,7 @@ class UserContext:
         """
         context method to register new user account
         """
-        admin_repository = AdminDBRepository(self.db)
+        admin_repository = DBRepository(self.db)
         admin_repository_transaction = await admin_repository.transaction()
         try:
 
@@ -59,7 +59,7 @@ class UserContext:
         """
         context method to refresh token
         """
-        admin_repository = AdminDBRepository(self.db)
+        admin_repository = DBRepository(self.db)
         admin_repository_transaction = await admin_repository.transaction()
         try:
             account_id = await admin_repository.account_authenticate(user.email, user.password)
@@ -82,7 +82,7 @@ class UserContext:
         """
         context method to activate a user account using activation token
         """
-        admin_repository = AdminDBRepository(self.db)
+        admin_repository = DBRepository(self.db)
         admin_repository_transaction = await admin_repository.transaction()
         try:
             account_id = await admin_repository.account_authenticate(user.email, user.password)

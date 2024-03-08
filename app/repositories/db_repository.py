@@ -3,8 +3,8 @@ import asyncpg
 from datetime import datetime, timedelta
 from utils.common import CustomHTTPException
 
-class AdminDBRepository:
-    _ERR_PREFIX = "[atrium.AdminDBRepository]"
+class DBRepository:
+    _ERR_PREFIX = "[DBRepository]"
 
     def __init__(self, db: asyncpg.Connection):
         self.db = db
