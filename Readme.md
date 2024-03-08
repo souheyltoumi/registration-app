@@ -26,7 +26,7 @@ This is a user registration FastAPI application with a PostgreSQL database, depl
     ```
 
 3. The FastAPI application should now be running. Access the API at [http://localhost:6009](http://localhost:6009).
-4. The MailHog server (SMTP) should now be running. Access the web view at [http://localhost:8025](http://localhost:1025).
+4. The MailHog server (SMTP) should now be running. Access the web view at [http://localhost:8025](http://localhost:8025).
 
 
 ## Usage
