@@ -32,7 +32,7 @@ if settings.env == "development":
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 # Add exception middleware
-# app.add_middleware(ExceptionMiddleware)
+app.add_middleware(ExceptionMiddleware)
 
 # manage route for order field
 app.include_router(user_router.router, dependencies=[Depends(get_controller)])

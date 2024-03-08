@@ -85,7 +85,7 @@ class DBRepository:
                 status_code=409
             )
 
-        if datetime.now() - token.get('creation_timestamp') > timedelta(minutes=5):
+        if datetime.now() - token.get('creation_timestamp') > timedelta(minutes=1):
             raise CustomHTTPException(
                 detail="[validate_account_token] expired token",
                 status_code=409
