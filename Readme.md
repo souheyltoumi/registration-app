@@ -51,5 +51,7 @@ To remove the Docker volumes (including the database data), run:
 docker-compose down -v
 ```
 
-## Tutorial
+## Architecture
+
+![Registation app architecture](./registration.jpg)
 
